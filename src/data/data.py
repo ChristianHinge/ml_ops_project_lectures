@@ -1,7 +1,8 @@
 import torch
 from torch.utils.data import Dataset
 from torchvision import datasets, transforms
-
+import os
+dirname = os.path.dirname(__file__)
 
 def mnist():
     # Define a transform to normalize the data
@@ -23,13 +24,13 @@ def mnist():
 
     # Download and load the training data
     trainset = datasets.MNIST(
-        "../../data/raw/MNIST/", download=True, train=True, transform=transform
+        os.path.join(dirname,"../../data/raw/MNIST/"), download=True, train=True, transform=transform
     )
     trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True)
 
     # Download and load the test data
     testset = datasets.MNIST(
-        "../../data/raw/MNIST/", download=True, train=False, transform=transform
+        os.path.join(dirname,"../../data/raw/MNIST/"), download=True, train=False, transform=transform
     )
     testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=True)
 
@@ -53,13 +54,10 @@ class Digits(Dataset):
         if torch.is_tensor(idx):
             idx = idx.tolist()
 
-        X = self.X[idx]
+        X = self.X[idx,]
+        Y = self.Y[idx,]
 
         if self.transform:
             X = self.transform(X)
 
-        if self.train:
-            Y = self.Y[idx]
-            return X, Y
-
-        return X
+        return X, Y
