@@ -22,7 +22,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        conda install mkl-service
     - name: Test with pytest
       run: |
         pip install pytest
