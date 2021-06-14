@@ -10,7 +10,6 @@ from src.models.model import cnn_model
 import torchvision
 from src.data.data import mnist
 
-import dotenv
 import os
 
 
