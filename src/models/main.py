@@ -47,7 +47,7 @@ class TrainOREvaluate:
         return total_loss / n_images
 
         
-    def eval_model(self,log_wandb=True):
+    def eval_model(self,log_wandb=False):
 
         _, testloader = mnist()
         self.model.eval()
@@ -70,7 +70,7 @@ class TrainOREvaluate:
             captions = [f"True: {t.item()}, Pred: {p.item()}" for t,p in zip(labels,y_pred)]
             wandb.log({"Final predictions":[wandb.Image(imgs[i,],caption=captions[i]) for i in range(imgs.shape[0])]})
 
-    def train_epochs(self,epochs=5,log_wandb=True):
+    def train_epochs(self,epochs=5,log_wandb=False):
         loss = np.zeros(epochs)
         for i in range(epochs):
             loss[i] = self.train_epoch()
@@ -87,13 +87,13 @@ class TrainOREvaluate:
         plt.savefig(os.path.join(self.project_dir,"../../reports/figures/train_loss.png"))
 
 
-    def train_and_save(self,log_wandb=True):
+    def train_and_save(self,log_wandb=False):
         print("Training mode")
         self.train_epochs(5,log_wandb=log_wandb)
         self.model.save()
 
 
-    def load_and_eval(self,log_wandb=True):
+    def load_and_eval(self,log_wandb=False):
         print("Evaluation mode")
         self.model.load()
         self.eval_model(log_wandb=log_wandb)
