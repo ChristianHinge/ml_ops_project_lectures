@@ -14,8 +14,7 @@ def mnist():
             transforms.Normalize((0.5,), (0.5,)),
         ]
     )
-
-
+    
     # Download and load the training data
     trainset = datasets.MNIST(
         os.path.join(filename,"../../data/raw/MNIST/"), download=True, train=True, transform=transform

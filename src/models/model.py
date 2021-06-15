@@ -4,9 +4,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import os
+import joblib
 
 project_dir = dirname = os.path.dirname(__file__)
-
 
 class cnn_model(nn.Module):
     def __init__(self):
@@ -50,13 +50,17 @@ class cnn_model(nn.Module):
 
         return x
 
-    def save(self):
+    def save(self,f="../../models/checkpoint.pth"):
         print("Saving model")
-        torch.save(self.state_dict(), os.path.join(project_dir,"../../models/checkpoint.pth"))
+        torch.save(self.state_dict(), os.path.join(project_dir,f))
+    
+    def save2(self,f):
+        joblib.dump(value=self, filename=f)
 
-    def load(self):
+    
+    def load(self,f="../../models/checkpoint.pth"):
         print("Loading model")
-        state_dict = torch.load(os.path.join(project_dir,"../../models/checkpoint.pth"))
+        state_dict = torch.load(os.path.join(project_dir,f))
         self.load_state_dict(state_dict)
 
     def save_best_accuracy(acc):

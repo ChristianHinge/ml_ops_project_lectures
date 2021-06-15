@@ -1,6 +1,6 @@
-from src.data import data
+from my_mnist.data import data
 from torchvision import transforms
-from src.models.model import cnn_model
+from my_mnist.models.model import cnn_model
 import torch
 import pytest
 

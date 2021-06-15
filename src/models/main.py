@@ -9,6 +9,7 @@ from matplotlib import pyplot as plt
 from src.models.model import cnn_model
 import torchvision
 from src.data.data import mnist
+from azureml.core import Run
 
 import os
 
@@ -89,14 +90,24 @@ class TrainOREvaluate:
 
     def train_and_save(self,log_wandb=False):
         print("Training mode")
-        self.train_epochs(5,log_wandb=log_wandb)
-        self.model.save()
-
+        
+        #self.train_epochs(1,log_wandb=log_wandb)
+        self.train_epoch(test_mode=True)
+        f = 'models/diabetes_model.pkl'
+        self.model.save2(f)
+        self.register_model_aml(f)
 
     def load_and_eval(self,log_wandb=False):
         print("Evaluation mode")
         self.model.load()
         self.eval_model(log_wandb=log_wandb)
+
+    def register_model_aml(self,f):
+        run = Run.get_context()
+        run.upload_file(name = 'outputs/diabetes_model.pkl', path_or_stream = f)
+        run.register_model(model_path='outputs/diabetes_model.pkl', model_name='diabetes_model',
+                   tags={'Training context':'Script'},
+                   properties={'AUC': 1, 'Accuracy': 2})
 
 
 if __name__ == "__main__":
