@@ -6,3 +6,4 @@ torch
 torchvision
 wandb
 joblib
+python-dotenv
